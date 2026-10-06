@@ -84,7 +84,6 @@ int main()
 }
 ```
 
-
 ## 效能分析
 
 1. 時間複雜度：遞迴或非遞迴版本的呼叫次數與最終計算出來的數值 A(m, n) 成正比。當 m>=4 時，數值會呈爆炸性增長（例如:A(4,2) 已經是大於宇宙原子總數的超大數字）。
@@ -134,5 +133,42 @@ $ ./ackermann
 2. **簡化狀態管理**  
   在計算 A(m, n - 1) 時，其回傳值會作為外層 A(m - 1, \cdot)$ 的輸入參數。遞迴架構：能自動利用系統內建的呼叫堆疊（Call Stack）來隱式（Implicitly）維護每一次函數呼叫的區域變數與回傳位址，開發者無需手動處理複雜的中間狀態儲存。非遞迴架構：必須自行設計並維護一個資料結構（如 Stack）來模擬這種巢狀呼叫，程式碼會變得相當冗長且容易出錯。
 
-3. **遞迴的展現**  
+3. **小結**  
    選擇遞迴寫法主要出於程式碼可讀性、數學定義自然還原以及開發效率的考量；然而在處理深層計算時，必須透過非遞迴（自訂堆疊）或尾遞迴優化等方式，以解決系統堆疊溢位（Stack Overflow）的硬體限制。
+
+作業一-2
+## 解題說明
+### 解題策略
+## 程式實作
+
+以下為主要程式碼：
+```
+#include <iostream>
+#include <vector>
+using namespace std;
+void generatePowerset(const vector<char>& S, vector<char>& current, int index) {
+    if (index == S.size()) {
+        cout << "(";
+        for (size_t i = 0; i < current.size(); ++i) {
+            cout << current[i];
+            if (i + 1 < current.size()) cout << ", ";
+        }
+        cout << ")\n";
+        return;
+    }
+    generatePowerset(S, current, index + 1);
+    current.push_back(S[index]);
+    generatePowerset(S, current, index + 1);
+    current.pop_back();
+}
+int main() {
+    vector<char> S = { 'a', 'b', 'c' };
+    vector<char> current;
+    cout << "powerset(S) = {\n";
+    generatePowerset(S, current, 0);
+    cout << "}" << endl;
+    return 0;
+```
+## 效能分析
+## 測試與驗證
+## 申論及開發報告
