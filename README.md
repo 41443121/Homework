@@ -1,35 +1,27 @@
 # 41443121
 
-作業一-1遞迴
+作業一
 
 ## 解題說明
-如果 m=0
-回傳 n+1
-如果 n=0
-計算 A(m-1, 1)
-如果 m不是0, n也不是0
-計算 A(m-1, A(m,n-1))。
-這裡會發生兩次遞迴呼叫。
+這題要求寫出一個阿克曼函數（Ackermann's function)來計算A(m,n)的值。使用遞迴和非遞迴的寫法各寫一次。
 ### 解題策略
-開始
- ↓
-輸入 m、n
- ↓
-m == 0 ?
- ├─ 是 → 回傳 n + 1
- │
- └─ 否
-      ↓
-    n == 0 ?
-     ├─ 是 → 計算 A(m-1,1)
-     │
-     └─ 否 → 計算 A(m-1,A(m,n-1))
-                    ↑
-                  遞迴
+1.遞迴寫法:
+m==0 時，返回 n+1，作為遞迴的結束條件。
+當 n==0 時，遞迴呼叫 A(m-1,1)。
+其他情況遞迴呼叫 A(m-1,A(m,n-1))，將問題拆解成更小的子問題。
+主程式輸入 m、n，呼叫 Ackermann 遞迴函式並輸出計算結果。
+2.非遞迴寫法:
+使用 Stack（堆疊）模擬遞迴函式的執行過程，將原本的遞迴呼叫改為迴圈處理。
+
+建立 stack 並將 m 放入堆疊，模擬遞迴函式的呼叫。
+當 m=0 時，將 n 加 1，作為遞迴結束條件。
+當 n=0 時，將 m-1 放入堆疊，並將 n 設為 1。
+其他情況將需要處理的 m 值依序放入 stack，並將 n 減 1，以模擬 A(m-1,A(m,n-1))。
+當 stack 為空時，表示所有計算完成，回傳 n 作為結果。
 ## 程式實作
 
 以下為主要程式碼：
-
+1遞迴
 ```cpp
 #include<iostream>
 using namespace std;
@@ -53,6 +45,46 @@ int main()
 	return 0;
 }
 ```
+2非遞迴
+```cpp
+#include<iostream>
+#include<stack>
+using namespace std;
+int A(int m,int n)
+{
+	stack<int>s;
+	s.push(m);
+	while (!s.empty()) 
+	{
+		m = s.top();
+		s.pop();
+		if (m == 0)
+		{
+			n = n + 1;
+		}
+		else if (n == 0) 
+		{
+			s.push(m - 1);
+			n = 1;
+		}
+		else 
+		{
+			s.push(m - 1);
+			s.push(m);
+			n = n - 1;
+		}
+	}
+	return n;
+}
+int main() 
+{
+	int m, n;
+	cin >> m >> n;
+	cout << A(m, n) << endl;
+	return 0;
+}
+```
+
 
 ## 效能分析
 
