@@ -1,7 +1,9 @@
 #include <iostream>
 #include <cmath>
+using namespace std;
 class Polynomial; 
-class Term {
+class Term //term類
+{
     friend class Polynomial; 
     friend std::ostream& operator<<(std::ostream& os, const Polynomial& poly);
     friend std::istream& operator>>(std::istream& is, Polynomial& poly);
@@ -9,11 +11,11 @@ private:
     float coef; 
     int exp;    
 };
-class Polynomial {
+class Polynomial //多項類別
+{
     friend std::ostream& operator<<(std::ostream& os, const Polynomial& poly);
     friend std::istream& operator>>(std::istream& is, Polynomial& poly);
-private:
-    
+private: //私有
     Term* termArray; 
     int capacity;    
     int terms;       
@@ -31,7 +33,7 @@ private:
         termArray[terms].coef = c;
         termArray[terms].exp = e;
         terms++;
-    }
+}
 public:
     Polynomial() : termArray(nullptr), capacity(0), terms(0) {}
     Polynomial(const Polynomial& poly) : capacity(poly.capacity), terms(poly.terms) {
